@@ -6,7 +6,6 @@ int main(){
     int sizeOfArray;
     cout << "Please enter the size of array: ";
     cin >> sizeOfArray;
-
     vector<int> array(sizeOfArray, 0);
 
     for(int i = 0; i < sizeOfArray; i++){
