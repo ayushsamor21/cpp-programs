@@ -14,7 +14,6 @@ int main(){
 
     vector<int> arr(sizeOfArray, 0);
 
-
     for(int i = 0; i < sizeOfArray; i++){
         cout << "Please enter the element at index["<< i <<"]: ";
         cin >> arr[i];

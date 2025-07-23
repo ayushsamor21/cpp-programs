@@ -24,7 +24,7 @@ int main(){
 
     bool isDuplicate = false;
     for(int i = 0; i < arr.size(); i++){
-        for(int j = i + 1; j <= i + k_distance; j++){
+        for(int j = i + 1; j <= i + k_distance && j < arr.size(); j++){
             if(arr[i] == arr[j]){
                 isDuplicate = true;
                 break;
@@ -34,9 +34,9 @@ int main(){
     }
 
     if (isDuplicate){
-        cout << "Yes, the duplicate exist in range.\n";
+        cout << "Yes, a duplicate exists within the given range.\n";
     } else{
-        cout << "No, the duplicate does not exist in range.\n";
+        cout << "No, the duplicate does not exist in given range.\n";
     }
     return 0;
 }
