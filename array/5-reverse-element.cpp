@@ -25,7 +25,7 @@ int main(){
         revArray[i] = array[sizeOfArray - 1 - i];
     }
 
-    cout <<"The reversed array: ";
+    cout <<"The reversed array: \n";
      for(int i = 0; i < sizeOfArray; i++){
         cout << "The value at Index["<< i <<"]:"<< revArray[i] << endl;
     }
