@@ -11,7 +11,6 @@ public:
         next = nullptr;
     }
 };
-
 // class Node {
 // public:
 //     int data;
