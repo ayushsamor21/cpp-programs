@@ -88,10 +88,10 @@ int main() {
         queue.enqueue(value);
     }
 
-    cout << "\nCurrent queue:\n";
+    cout << "Current queue:\n";
     queue.display();
 
-    cout << "\nFront element: " << queue.getFront() << endl;
+    cout << "Front element: " << queue.getFront() << endl;
 
     cout << "the dequeued element: " << queue.dequeue() << endl;
 
