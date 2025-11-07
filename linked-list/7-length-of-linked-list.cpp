@@ -95,6 +95,6 @@ int main() {
     cout << "Linked List: ";
     list.print();
 
-    cout << "The length of LinkedList :" << list.lengthOfList() << endl;
+    cout << "The length of LinkedList : " << list.lengthOfList() << endl;
     return 0;
 }

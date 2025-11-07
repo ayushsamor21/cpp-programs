@@ -44,7 +44,7 @@ public:
     }
 
     // Print linked list
-    void print() const {
+    void print() {
         Node* temp = head;
         while (temp != nullptr) {
             cout << temp->data;
