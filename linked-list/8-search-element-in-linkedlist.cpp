@@ -99,10 +99,9 @@ int main() {
     cin >>searchElement;
 
     if (list.searchElement(searchElement)){
-        cout << "The element "<< searchElement <<" is present in the linked list!!";
+        cout << "The element "<< searchElement <<" is present in the linked list!!\n";
     } else {
-        cout << "The element "<< searchElement <<" is not present in the linked list!!";
+        cout << "The element "<< searchElement <<" is not present in the linked list!!\n";
     }
-
     return 0;
 }
