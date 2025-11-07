@@ -31,7 +31,7 @@ public:
     }
 
     void printInorder() {
-        printInorder(root);  ;  // Calls the above function starting from the root
+        printInorder(root);  ;  //  Calls the above function starting from the root
     }
 };
 
