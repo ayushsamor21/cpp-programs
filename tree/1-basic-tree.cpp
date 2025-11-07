@@ -30,9 +30,8 @@ public:
         printInorder(node->right);      // Visit right subtree
     }
 
-    // Public function to start from root
     void printInorder() {
-        printInorder(root);
+        printInorder(root);  ;  // Calls the above function starting from the root
     }
 };
 
