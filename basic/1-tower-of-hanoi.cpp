@@ -1,21 +1,21 @@
 #include <iostream>
 using namespace std;
 
-void towerOfHanoi(int n, char from, char to, char aux) {
+void towerOfHanoi(int n, char start, char destination, char auxiliary) {
     // Base case
     if (n == 1) {
-        cout << "Move disk 1 from " << from << " to " << to << endl;
+        cout << "Move disk 1 from " << start << " to " << destination << endl;
         return;
     }
 
-    // Step 1: Move top n-1 disks from source to auxiliary
-    towerOfHanoi(n - 1, from, aux, to);
+    // Move n-1 disks from start → auxiliary
+    towerOfHanoi(n - 1, start, auxiliary, destination);
 
-    // Step 2: Move the nth disk from source to destination
-    cout << "Move disk " << n << " from " << from << " to " << to << endl;
+    // Move nth disk from start → destination
+    cout << "Move disk " << n << " from " << start << " to " << destination << endl;
 
-    // Step 3: Move n-1 disks from auxiliary to destination
-    towerOfHanoi(n - 1, aux, to, from);
+    // Move n-1 disks from auxiliary → destination
+    towerOfHanoi(n - 1, auxiliary, destination, start);
 }
 
 int main() {
@@ -23,6 +23,12 @@ int main() {
     cout << "Enter number of disks: ";
     cin >> n;
 
-    towerOfHanoi(n, 'A', 'C', 'B');
+    // Fixed names as you wanted
+    char start = 'A';
+    char destination = 'C';
+    char auxiliary = 'B';
+
+    towerOfHanoi(n, start, destination, auxiliary);
+
     return 0;
 }
