@@ -9,7 +9,7 @@ private:
     int capacity;   // size of the queue
 
 public:
-    // Constructor
+    
     CircularQueue(int size) {
         capacity = size;
         data = new int[capacity];
