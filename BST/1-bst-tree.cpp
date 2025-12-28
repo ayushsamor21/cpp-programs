@@ -62,7 +62,6 @@ int main() {
         cin >> element;
         tree.insert(element);
     }
-
     cout << "BST Inorder Traversal: ";
     tree.display();
 }
