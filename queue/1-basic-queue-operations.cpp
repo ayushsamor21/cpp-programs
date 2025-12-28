@@ -3,9 +3,9 @@ using namespace std;
 
 class Queue {
 private:
-    int *data; // array pointer
-    int front; // index of front element
-    int rear; // index of rear element
+    int *data;    // array pointer
+    int front;    // index of front element
+    int rear;     // index of rear element
     int capacity; // maximum capacity of queue
 
 public:
