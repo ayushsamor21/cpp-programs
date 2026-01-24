@@ -1,0 +1,97 @@
+#include <iostream>
+using namespace std;
+
+//Brute-Force: O(N+N/2) = O(1.5N) = O(N)
+
+class Node {
+public:
+    int data;
+    Node* next;
+    Node(int value) {
+        data = value;
+        next = nullptr;
+    }
+};
+
+class LinkedList {
+private:
+    Node* head;
+public:
+    LinkedList () {
+        head = nullptr;
+    }
+
+    void append (int value) {
+        Node* newNode = new Node(value);
+        if (head == nullptr) {
+            head = newNode;
+            return;
+        }
+
+        Node* temp = head;
+        while (temp->next != nullptr) {
+            temp = temp->next;
+        }
+        temp->next = newNode;
+        return;
+    }
+
+    void printLinkedList () {
+        Node* temp = head;
+        while ( temp != nullptr) {
+            cout << temp->data;
+            if ( temp->next != nullptr) {
+                cout << "->";
+            }
+            temp = temp->next;
+        }
+    }
+
+    void middleLinkedList(int numberOfElements) {
+        int middleIndex = numberOfElements/2;
+        int index = 0;
+        Node* temp = head;
+        while (temp != nullptr) {
+            if (middleIndex == index) {
+                cout << "The middle element is: " << temp->data << endl;
+                return;
+            }
+            index++;
+            temp = temp->next;
+        }
+    }
+
+    void freeList () {
+        Node* temp;
+        while(head != nullptr) {
+            temp = head;
+            head = head->next;
+            delete temp;
+        }
+    }
+
+    ~LinkedList() {
+        freeList();
+    }
+};
+
+int main() {
+    LinkedList list;
+    int numOfElements, num;
+
+    cout << "Please enter the number of elements: ";
+    cin >> numOfElements;
+
+    for (int i = 0; i < numOfElements; i++) {
+        cout << "Please enter the element: ";
+        cin >> num;
+        list.append(num);
+    }
+
+    list.middleLinkedList(numOfElements);
+
+    cout << "Linked List: ";
+    list.printLinkedList();
+
+    return 0;
+}
