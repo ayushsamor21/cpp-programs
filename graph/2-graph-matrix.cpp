@@ -1,6 +1,12 @@
 #include <iostream>
 using namespace std;
 
+// Rows = source vertex
+// Columns = destination vertex
+
+// O(V^2) = space complexity;
+
+
 int main() {
     int vertex = 4;
     int matrix[4][4] = {0};
