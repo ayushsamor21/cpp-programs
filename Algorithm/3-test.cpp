@@ -1,43 +1,102 @@
-#include <stdio.h>
+#include <iostream>
+#include <queue>
+#include <cstring>
+using namespace std;
 
-void swap(int *a, int *b) {
-    int temp = *a;
-    *a = *b;
-    *b = temp;
+#define CHAR 26
+
+struct Node {
+    Node *children[CHAR];
+    Node *fail;
+    bool output;
+};
+
+Node* createNode() {
+    Node* node = new Node;
+    for(int i = 0; i < CHAR; i++) node->children[i] = NULL;
+    node->fail = NULL;
+    node->output = false;
+    return node;
 }
 
-void heapifyMax(int arr[], int n, int i) {
-    int largest = i;
-    int left = 2*i + 1;
-    int right = 2*i + 2;
+void insert(Node *root, char *pattern) {
+    Node *p = root;
+    for(int i = 0; pattern[i]; i++) {
+        int index = pattern[i]-'a';
+        if(!p->children[index])
+            p->children[index] = createNode();
+        p = p->children[index];
+    }
+    p->output = true;
+}
 
-    if (left < n && arr[left] > arr[largest])
-        largest = left;
-    if (right < n && arr[right] > arr[largest])
-        largest = right;
-    if (largest != i) {
-        swap(&arr[i], &arr[largest]);
-        heapifyMax(arr, n, largest);
+void buildFailure(Node *root) {
+    queue<Node*> q;
+    root->fail = root;
+    for(int i = 0; i < CHAR; i++) {
+        if(root->children[i]) {
+            root->children[i]->fail = root;
+            q.push(root->children[i]);
+        }
+    }
+
+    while(!q.empty()) {
+        Node* curr = q.front(); q.pop();
+        for(int i = 0; i < CHAR; i++) {
+            if(curr->children[i]) {
+                Node* f = curr->fail;
+                while(f != root && !f->children[i])
+                    f = f->fail;
+                if(f->children[i])
+                    f = f->children[i];
+                curr->children[i]->fail = f;
+                q.push(curr->children[i]);
+            }
+        }
     }
 }
 
-void heapSortMax(int arr[], int n) {
-    for (int i = n/2 - 1; i >= 0; i--)
-        heapifyMax(arr, n, i);
-    for (int i = n-1; i > 0; i--) {
-        swap(&arr[0], &arr[i]);
-        heapifyMax(arr, i, 0);
+void search(Node *root, char *text) {
+    Node *p = root;
+    for(int i = 0; text[i]; i++) {
+        int index = text[i]-'a';
+        while(p != root && !p->children[index])
+            p = p->fail;
+        if(p->children[index])
+            p = p->children[index];
+
+        Node *temp = p;
+        while(temp != root) {
+            if(temp->output)
+                cout << "Pattern found ending at index " << i << endl;
+            temp = temp->fail;
+        }
     }
 }
 
 int main() {
-    int arr[] = {12, 11, 13, 5, 6, 7};
-    int n = sizeof(arr)/sizeof(arr[0]);
+    // Program name
+    cout << "Program Name: Aho-Corasick Multiple Pattern Matching Algorithm" << endl;
 
-    heapSortMax(arr, n);
+    Node* root = createNode();
 
-    for (int i=0; i<n; i++)
-        printf("%d ", arr[i]);
-    printf("\n");
+    int n;
+    cout << "Enter number of patterns: ";
+    cin >> n;
+    char patterns[10][50]; // Up to 10 patterns
+
+    for(int i = 0; i < n; i++) {
+        cout << "Enter pattern " << i+1 << ": ";
+        cin >> patterns[i];
+        insert(root, patterns[i]);
+    }
+
+    buildFailure(root);
+
+    char text[200];
+    cout << "Enter text: ";
+    cin >> text;
+
+    search(root, text);
     return 0;
 }
