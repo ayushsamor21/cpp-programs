@@ -1,102 +1,56 @@
-#include <iostream>
-#include <queue>
-#include <cstring>
+#include <bits/stdc++.h>
 using namespace std;
 
-#define CHAR 26
-
-struct Node {
-    Node *children[CHAR];
-    Node *fail;
-    bool output;
+struct Edge {
+    int u, v, w;
 };
 
-Node* createNode() {
-    Node* node = new Node;
-    for(int i = 0; i < CHAR; i++) node->children[i] = NULL;
-    node->fail = NULL;
-    node->output = false;
-    return node;
+bool cmp(Edge a, Edge b) {
+    return a.w < b.w;
 }
 
-void insert(Node *root, char *pattern) {
-    Node *p = root;
-    for(int i = 0; pattern[i]; i++) {
-        int index = pattern[i]-'a';
-        if(!p->children[index])
-            p->children[index] = createNode();
-        p = p->children[index];
-    }
-    p->output = true;
+int findParent(int v, vector<int>& parent) {
+    if (v == parent[v]) return v;
+    return parent[v] = findParent(parent[v], parent);
 }
 
-void buildFailure(Node *root) {
-    queue<Node*> q;
-    root->fail = root;
-    for(int i = 0; i < CHAR; i++) {
-        if(root->children[i]) {
-            root->children[i]->fail = root;
-            q.push(root->children[i]);
-        }
-    }
-
-    while(!q.empty()) {
-        Node* curr = q.front(); q.pop();
-        for(int i = 0; i < CHAR; i++) {
-            if(curr->children[i]) {
-                Node* f = curr->fail;
-                while(f != root && !f->children[i])
-                    f = f->fail;
-                if(f->children[i])
-                    f = f->children[i];
-                curr->children[i]->fail = f;
-                q.push(curr->children[i]);
-            }
-        }
-    }
-}
-
-void search(Node *root, char *text) {
-    Node *p = root;
-    for(int i = 0; text[i]; i++) {
-        int index = text[i]-'a';
-        while(p != root && !p->children[index])
-            p = p->fail;
-        if(p->children[index])
-            p = p->children[index];
-
-        Node *temp = p;
-        while(temp != root) {
-            if(temp->output)
-                cout << "Pattern found ending at index " << i << endl;
-            temp = temp->fail;
-        }
+void unionSet(int a, int b, vector<int>& parent, vector<int>& rank) {
+    a = findParent(a, parent);
+    b = findParent(b, parent);
+    if (a != b) {
+        if (rank[a] < rank[b]) swap(a, b);
+        parent[b] = a;
+        if (rank[a] == rank[b]) rank[a]++;
     }
 }
 
 int main() {
-    // Program name
-    cout << "Program Name: Aho-Corasick Multiple Pattern Matching Algorithm" << endl;
+    int n, m;
+    cin >> n >> m;
 
-    Node* root = createNode();
+    vector<Edge> edges(m);
+    for (int i = 0; i < m; i++)
+        cin >> edges[i].u >> edges[i].v >> edges[i].w;
 
-    int n;
-    cout << "Enter number of patterns: ";
-    cin >> n;
-    char patterns[10][50]; // Up to 10 patterns
+    sort(edges.begin(), edges.end(), cmp);
 
-    for(int i = 0; i < n; i++) {
-        cout << "Enter pattern " << i+1 << ": ";
-        cin >> patterns[i];
-        insert(root, patterns[i]);
+    vector<int> parent(n), rank(n, 0);
+    for (int i = 0; i < n; i++) parent[i] = i;
+
+    int cost = 0;
+    vector<Edge> mst;
+
+    for (auto e : edges) {
+        if (findParent(e.u, parent) != findParent(e.v, parent)) {
+            cost += e.w;
+            mst.push_back(e);
+            unionSet(e.u, e.v, parent, rank);
+        }
     }
 
-    buildFailure(root);
+    cout << cost << endl;
+    for (auto e : mst)
+        cout << e.u << " " << e.v << " " << e.w << endl;
 
-    char text[200];
-    cout << "Enter text: ";
-    cin >> text;
-
-    search(root, text);
     return 0;
 }
