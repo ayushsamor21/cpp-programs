@@ -1,45 +1,53 @@
 #include <iostream>
-#include <vector>
 using namespace std;
 
-int editDistance(string s1, string s2) {
-    int m = s1.length();
-    int n = s2.length();
+void merge(int arr[], int left, int mid, int right) {
+    int n1 = mid - left + 1;
+    int n2 = right - mid;
 
-    // Create DP table
-    vector<vector<int>> dp(m + 1, vector<int>(n + 1));
+    int L[n1], R[n2];
 
-    // Base cases
-    for (int i = 0; i <= m; i++)
-        dp[i][0] = i; // delete all characters
+    for (int i = 0; i < n1; i++)
+        L[i] = arr[left + i];
+    for (int j = 0; j < n2; j++)
+        R[j] = arr[mid + 1 + j];
 
-    for (int j = 0; j <= n; j++)
-        dp[0][j] = j; // insert all characters
+    int i = 0, j = 0, k = left;
 
-    // Fill DP table
-    for (int i = 1; i <= m; i++) {
-        for (int j = 1; j <= n; j++) {
-
-            if (s1[i - 1] == s2[j - 1]) {
-                dp[i][j] = dp[i - 1][j - 1]; // no operation
-            } else {
-                dp[i][j] = 1 + min({
-                    dp[i - 1][j],     // delete
-                    dp[i][j - 1],     // insert
-                    dp[i - 1][j - 1]  // replace
-                });
-            }
+    while (i < n1 && j < n2) {
+        if (L[i] <= R[j]) {
+            arr[k++] = L[i++];
+        } else {
+            arr[k++] = R[j++];
         }
     }
 
-    return dp[m][n];
+    while (i < n1) {
+        arr[k++] = L[i++];
+    }
+
+    while (j < n2) {
+        arr[k++] = R[j++];
+    }
+}
+
+void mergeSort(int arr[], int left, int right) {
+    if (left < right) {
+        int mid = left + (right - left) / 2;
+        mergeSort(arr, left, mid);
+        mergeSort(arr, mid + 1, right);
+        merge(arr, left, mid, right);
+    }
 }
 
 int main() {
-    string s1 = "kitten";
-    string s2 = "sitting";
+    int arr[] = {38, 27, 43, 3, 9, 82, 10};
+    int n = sizeof(arr) / sizeof(arr[0]);
 
-    cout << "Edit Distance: " << editDistance(s1, s2) << endl;
+    mergeSort(arr, 0, n - 1);
+
+    for (int i = 0; i < n; i++)
+        cout << arr[i] << " ";
 
     return 0;
 }
